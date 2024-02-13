@@ -31,7 +31,17 @@ class KeyStore {
     return KeyPair(privateKey, publicKey);
   }
 
+  static KeyPair fromSecret(String secret) {
+    PrivateKey privateKey = PrivateKey(base58.decode(secret));
+    PublicKey publicKey = PublicKey(ed.public(privateKey).bytes);
+    return KeyPair(privateKey, publicKey);
+  }
+
   static String publicKeyToString(ed.PublicKey keyPair) {
+    return base58.encode(Uint8List.fromList(keyPair.bytes));
+  }
+
+  static String privateKeyToString(ed.PrivateKey keyPair) {
     return base58.encode(Uint8List.fromList(keyPair.bytes));
   }
 }
