@@ -15,7 +15,7 @@ import 'dart:math';
 void main() {
   test('test signin', () async {
     String baseArkanaURL =
-        "http://localhost:9092"; // "https://dev-infra.arkana.gg"; https://api.eastblue.io
+        "https://dev-infra.arkana.gg"; // "https://dev-infra.arkana.gg"; https://api.eastblue.io
     String arkanaVerifyURL = baseArkanaURL + "/auth/verify/akoma";
     String arkanaSaveKeysURL = baseArkanaURL + "/auth/save-keys";
 
@@ -42,6 +42,8 @@ void main() {
         .post(Uri.parse(arkanaVerifyURL), headers: headers, body: body);
 
     // 1. If already registered
+
+    print(responseDataTransaction.body);
 
     dynamic response = jsonDecode(responseDataTransaction.body);
     if (response['message']['is_registered'] == true) {
@@ -143,8 +145,13 @@ void main() {
           body: bodySaveKeys);
 
       dynamic responseSaveKeys = jsonDecode(responseSaveKeysJson.body);
-      String token = responseSaveKeys.token; // new jwt for auth
-      String accountId = responseSaveKeys.account_id; // new near account_id
+      print(responseSaveKeys);
+      String token = responseSaveKeys['message']['token']; // new jwt for auth
+      String accountId =
+          responseSaveKeys['message']['account_id']; // new near account_id
+
+      print(token);
+      print(accountId);
     }
   });
 }
